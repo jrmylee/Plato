@@ -1,5 +1,6 @@
 var request = require('request');
-var token = "Bearer BQCe6Y7snbBaQtjO0ru272lAGvYzO9KhQ7uZq4tluatmwbDpIN1SDNrZVZ96UQotFCiVn8AshX824jfss3_n4OhGJ-2yQDpPtnHOLlD-ZGqVxUrPvfJ-MSVwnZb2nywNX7JwWIuDQn8BgdAqE9mVpijEnBEeIl0LpsMDE4mX";
+// var token = "Bearer BQCe6Y7snbBaQtjO0ru272lAGvYzO9KhQ7uZq4tluatmwbDpIN1SDNrZVZ96UQotFCiVn8AshX824jfss3_n4OhGJ-2yQDpPtnHOLlD-ZGqVxUrPvfJ-MSVwnZb2nywNX7JwWIuDQn8BgdAqE9mVpijEnBEeIl0LpsMDE4mX";
+var token = "Bearer BQA3EAvBsKd_ydvlqx-2jtyJ1y3E4mxR4PtjGBHYTZaVswRYd2LyhSkXSnSwLcLjc8zV1qL0z36zUXgfHbROzH_tsJqOqXh6tmmxh596FLlj48cSLCNQjHReDv1CEBbsSNEwxfC-1UbuBpq4bzgRxQVh1l57kqsmnMyoAU6bPS5WsJWnGmjpZaHXeXsYCnnF&"
 var fs = require("fs");
 
 var getAllTracks = function(cb){
@@ -25,6 +26,7 @@ var getSongFeatures = function(ids, cb){
 } 
 
 getAllTracks((err, body) => {
+    console.log(body);
     var ids = body.items.map(item => {
         return item.track.id;
     })
