@@ -26,19 +26,33 @@ class App extends Component {
     document.body.removeChild(dummy);
   }
   
-  downloadJson(){
+  downloadJson(tracks){
+    let url = window.URL.createObjectURL(new Blob([JSON.stringify(tracks)]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `tracks.json`);
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+  }
+
+  parseTracks(){
     if(this.state.isLoggedIn){
       spotifyApi.getMySavedTracks({limit: 50})
         .then(tracks => tracks.items)
-        .then(tracks =>{
-          let url = window.URL.createObjectURL(new Blob([JSON.stringify(tracks)]));
-          const link = document.createElement('a');
-          link.href = url;
-          link.setAttribute('download', `tracks.json`);
-          document.body.appendChild(link);
-          link.click();
-          link.parentNode.removeChild(link);
-
+        .then(async tracks =>{
+          var ids = tracks.map(t => t.track.id);
+          let response = await spotifyApi.getAudioFeaturesForTracks(ids);
+          let features = response.audio_features;
+          features = features.map(feature => {
+            var track = tracks.find(t => t.track.id === feature.id);
+            return {
+              ...feature,
+              artist: track.track.artists[0].name,
+              name: track.track.name
+            }
+          })
+          this.downloadJson(features);
         })
     }
   }
@@ -56,10 +70,10 @@ class App extends Component {
     if(this.state.isLoggedIn){
       button = (
         <React.Fragment>
-          <div>
-            <button className="button is-info" onClick={() => this.copyToken()}> Copy Token </button>
-            <button className="button is-primary" onClick={() => this.downloadJson()}> Download Library </button>
-            <button className="button is-danger" onClick={() => this.logout()}> Logout </button>
+          <div className="buttons">
+            <button className="full-width button is-info" onClick={() => this.copyToken()}> Copy Token </button>
+            <button className="full-width button is-primary" onClick={() => this.parseTracks()}> Download Library </button>
+            <button className="full-width button is-danger" onClick={() => this.logout()}> Logout </button>
           </div>
         </React.Fragment>
       );

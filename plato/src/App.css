@@ -10,6 +10,15 @@
   pointer-events: none;
 }
 
+.buttons{
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width{
+  width: 100%;
+}
+
 .main-card{
   width:400px;
   height:350px;
