@@ -12,6 +12,13 @@
 
 .main-card{
   width:400px;
+  height:350px;
+  margin-top: 20px;
+}
+
+.button-row{
+  display:flex;
+  justify-content:space-between; 
 }
 
 .App-header {
